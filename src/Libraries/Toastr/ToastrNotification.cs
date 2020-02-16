@@ -1,4 +1,5 @@
-﻿using NToastNotify.Helpers;
+﻿using Microsoft.Extensions.Localization;
+using NToastNotify.Helpers;
 using NToastNotify.MessageContainers;
 using static NToastNotify.Enums;
 
@@ -6,31 +7,31 @@ namespace NToastNotify
 {
     public class ToastrNotification : ToastNotification<ToastrMessage, ToastrOptions>
     {
-        private readonly NToastNotifyOption _defaultNtoastNotifyOptions;
+        private readonly IStringLocalizer<ToastrNotification> _localizer;
 
-        public ToastrNotification(IMessageContainerFactory messageContainerFactory, NToastNotifyOption nToastNotifyOptions) : base(messageContainerFactory)
+        public ToastrNotification(IMessageContainerFactory messageContainerFactory, IStringLocalizer<ToastrNotification> localizer) : base(messageContainerFactory)
         {
-            _defaultNtoastNotifyOptions = nToastNotifyOptions;
+            _localizer = localizer;
         }
 
         public override void AddInfoToastMessage(string message, ILibraryOptions toastrOptions = null)
         {
-            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Info, _defaultNtoastNotifyOptions.DefaultInfoTitle);
-            var toastMessage = new ToastrMessage(message ?? _defaultNtoastNotifyOptions.DefaultInfoMessage, options);
+            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Info, _localizer.GetString("DefaultInfoTitle"));
+            var toastMessage = new ToastrMessage(message ?? _localizer.GetString("DefaultInfoMessage"), options);
             AddMessage(toastMessage);
         }
 
         public override void AddWarningToastMessage(string message = null, ILibraryOptions toastrOptions = null)
         {
-            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Warning, _defaultNtoastNotifyOptions.DefaultWarningTitle);
-            var toastMessage = new ToastrMessage(message ?? _defaultNtoastNotifyOptions.DefaultWarningMessage, options);
+            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Warning, _localizer.GetString("DefaultWarningTitle"));
+            var toastMessage = new ToastrMessage(message ?? _localizer.GetString("DefaultWarningMessage"), options);
             AddMessage(toastMessage);
         }
 
         public override void AddErrorToastMessage(string message = null, ILibraryOptions toastrOptions = null)
         {
-            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Error, _defaultNtoastNotifyOptions.DefaultErrorTitle);
-            var toastMessage = new ToastrMessage(message ?? _defaultNtoastNotifyOptions.DefaultErrorMessage, options);
+            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Error, _localizer.GetString("DefaultErrorTitle"));
+            var toastMessage = new ToastrMessage(message ?? _localizer.GetString("DefaultErrorMessage"), options);
             AddMessage(toastMessage);
         }
 
@@ -42,8 +43,8 @@ namespace NToastNotify
 
         public override void AddSuccessToastMessage(string message = null, ILibraryOptions toastrOptions = null)
         {
-            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Success, _defaultNtoastNotifyOptions.DefaultSuccessTitle);
-            var toastMessage = new ToastrMessage(message ?? _defaultNtoastNotifyOptions.DefaultSuccessMessage, options);
+            var options = OptionsHelpers.PrepareOptionsToastr(toastrOptions, NotificationTypesToastr.Success, _localizer.GetString("DefaultSuccessTitle"));
+            var toastMessage = new ToastrMessage(message ?? _localizer.GetString("DefaultSuccessMessage"), options);
             AddMessage(toastMessage);
         }
 
